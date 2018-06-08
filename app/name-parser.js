@@ -38,7 +38,6 @@ NameParser.prototype.guessPerson = function(name) {
     if (!name.parsed["Surname"] && name.parsed["Forename"].match(/ /)) {
         var newClone = Object.assign({}, clonedParse)
         var forenameWithSpace = newClone["Forename"]
-
         lastSpace = forenameWithSpace.lastIndexOf(' ')
         newClone["Surname"] = forenameWithSpace.slice(0, lastSpace).trim()
         newClone["Forename"] = forenameWithSpace.slice(lastSpace).trim()
@@ -147,14 +146,16 @@ NameParser.prototype.parseDate = function(name) {
         // TODO: fails for Carleton (Family : Carleton, James, 1757-1827 )
         // TODO: Build smarter date-parsing? 'active 1679-1708' => 1679-1708, 'died 1455'/ 'd. 1455' => -1445
         // grab from first digit to last
-        if (name.parts[i].match(/\d+|\d+\s*-|-\s*\d+|\d+\s*-\s*\d+/)) {
+        if (name.parts[i].match(/\d\d+|\d+\s*-|-\s*\d+|\d+\s*-\s*\d+/)) {
             // name.parsed["Date"] = name.parts[i].match(/-?\d.*\d-?/)[0];
             var match = name.parts[i].match(/-?\d.*\d-?/);
             // name.parsed["Date"] = name.parts[i].substring(match.index);
-            name.parsed["Date"] = match[0];
-            name.parts[i] = name.parts[i].substring(0, match.index).trim();
-            if (name.parts[i] === '') {
-                name.parts.splice(i, 1);
+            if (match) {
+                name.parsed["Date"] = match[0];
+                name.parts[i] = name.parts[i].substring(0, match.index).trim();
+                if (name.parts[i] === '') {
+                    name.parts.splice(i, 1);
+                }
             }
             // name.parsed["Date"] = name.parts[i].match(/-?\d.*\d-?/)[0];
             // console.log("Dated: ", name.parts);

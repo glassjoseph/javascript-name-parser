@@ -131,7 +131,5 @@ describe("Name parser guessPerson", function() {
         expect(guesses[1]["Forename"]).toEqual("Smith")
         expect(guesses[2]["Surname"]).toEqual("Smith")  // guesses both in case order doesn't match RDA
         expect(guesses[2]["Forename"]).toEqual("James H.")
-        console.log(guesses)
-
     });
 });
